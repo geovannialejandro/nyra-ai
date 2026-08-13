@@ -109,7 +109,9 @@ export default function GenerarPage() {
         style={{ width: '100%', background: panel, border: '1px solid #2A2823', color: ivory, padding: '14px', borderRadius: '6px', fontSize: '0.85rem', marginBottom: '24px' }}
       >
         <option value="Zephyr (Female)">Voz femenina — cálida</option>
-        <option value="Orion (Male)">Voz masculina — profesional</option>
+        <option value="Kore (Female)">Voz femenina — profesional</option>
+        <option value="Puck (Male)">Voz masculina — cálida</option>
+        <option value="Charon (Male)">Voz masculina — profesional</option>
       </select>
 
       <button
