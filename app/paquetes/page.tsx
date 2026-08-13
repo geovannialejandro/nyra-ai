@@ -4,8 +4,8 @@ import { useState } from 'react';
 import { supabase } from '@/lib/supabase';
 
 const PAQUETES = [
-  { id: 'basico', nombre: 'Paquete Básico', creditos: 5, precio: 199, priceId: 'PENDIENTE_BASICO' },
-  { id: 'pro', nombre: 'Paquete Pro', creditos: 20, precio: 649, priceId: 'PENDIENTE_PRO' },
+  { id: 'basico', nombre: 'Paquete Básico', creditos: 5, precio: 199, priceId: 'price_1U43QBIALhl7T1t8KYbUmqcm' },
+  { id: 'pro', nombre: 'Paquete Pro', creditos: 20, precio: 649, priceId: 'price_1U43XmIALhl7T1t8ERlZgZAF' },
 ];
 
 export default function PaquetesPage() {
