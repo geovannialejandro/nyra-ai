@@ -9,8 +9,8 @@ const supabase = createClient(
 );
 
 const PRICE_TO_CREDITS: Record<string, number> = {
-  'price_1U43QBIALhl7T1t8KYbUmqcm': 5,
-  'price_1U43XmIALhl7T1t8ERlZgZAF': 20,
+  'price_1U4JzYIALhl7T1t8Ykd29H7A': 5,
+  'price_1U4K39IALhl7T1t8CaKPzkdf': 20,
 };
 
 export async function POST(req: NextRequest) {
