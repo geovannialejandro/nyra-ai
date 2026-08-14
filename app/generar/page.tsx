@@ -97,8 +97,13 @@ export default function GenerarPage() {
         <div style={{ fontFamily: 'Georgia, serif', fontStyle: 'italic', fontSize: '1.2rem', color: goldSoft }}>
           Nyra
         </div>
-        <div style={{ fontSize: '0.75rem', color: bronze, border: `1px solid ${bronze}`, borderRadius: '20px', padding: '4px 12px' }}>
-          {credits === null ? '...' : `${credits} créditos`}
+        <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+          <a href="/historial" style={{ fontSize: '0.75rem', color: ash, textDecoration: 'underline' }}>
+            Mis videos
+          </a>
+          <div style={{ fontSize: '0.75rem', color: bronze, border: `1px solid ${bronze}`, borderRadius: '20px', padding: '4px 12px' }}>
+            {credits === null ? '...' : `${credits} créditos`}
+          </div>
         </div>
       </div>
 
