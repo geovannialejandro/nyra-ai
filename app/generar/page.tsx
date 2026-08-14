@@ -19,13 +19,21 @@ export default function GenerarPage() {
 
   async function fetchCredits() {
     const { data: { user } } = await supabase.auth.getUser();
-    if (!user) return;
+    if (!user) {
+      setErrorMsg('DEBUG: no hay usuario logueado');
+      return;
+    }
 
-    const { data } = await supabase
+    const { data, error } = await supabase
       .from('user_credits')
       .select('credits')
       .eq('user_id', user.id)
       .single();
+
+    if (error) {
+      setErrorMsg('DEBUG créditos: ' + error.message);
+      return;
+    }
 
     if (data) setCredits(data.credits);
   }
