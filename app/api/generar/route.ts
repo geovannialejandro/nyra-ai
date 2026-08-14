@@ -20,6 +20,13 @@ export async function POST(req: NextRequest) {
       );
     }
 
+    if (voice_script.length > 300) {
+      return NextResponse.json(
+        { error: 'El texto es muy largo. Máximo 300 caracteres (~30 segundos de video).' },
+        { status: 400 }
+      );
+    }
+
     // Descuenta 1 crédito de forma segura (evita race conditions)
     const { data: canProceed, error: creditError } = await supabase.rpc(
       'deduct_credits',
