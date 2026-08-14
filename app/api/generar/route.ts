@@ -22,7 +22,7 @@ export async function POST(req: NextRequest) {
 
     if (voice_script.length > 300) {
       return NextResponse.json(
-        { error: 'El texto es muy largo. Máximo 200 caracteres (~30 segundos de video).' },
+        { error: 'El texto es muy largo. Máximo 300 caracteres (~30 segundos de video).' },
         { status: 400 }
       );
     }
