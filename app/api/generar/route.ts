@@ -27,7 +27,6 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    // Descuenta 1 crédito de forma segura (evita race conditions)
     const { data: canProceed, error: creditError } = await supabase.rpc(
       'deduct_credits',
       { p_user_id: userId, p_amount: 1 }
@@ -44,16 +43,32 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    // Llama al modelo de video
-    const output = await replicate.run('prunaai/p-video-avatar', {
-      input: {
-        image,
-        voice_script,
-        voice: voice || 'Zephyr (Female)',
-      },
-    });
+    try {
+      const output = await replicate.run('prunaai/p-video-avatar', {
+        input: {
+          image,
+          voice_script,
+          voice: voice || 'Zephyr (Female)',
+        },
+      });
 
-    return NextResponse.json({ output });
+      const videoUrl = Array.isArray(output) ? output[0] : output;
+
+      await supabase.from('video_history').insert({
+        user_id: userId,
+        video_url: videoUrl as string,
+        script: voice_script,
+      });
+
+      return NextResponse.json({ output });
+    } catch (replicateError: any) {
+      console.error('Replicate falló, devolviendo crédito:', replicateError);
+      await supabase.rpc('add_credits', { p_user_id: userId, p_amount: 1 });
+      return NextResponse.json(
+        { error: 'No se pudo generar el video. Tu crédito fue devuelto, intenta de nuevo.' },
+        { status: 500 }
+      );
+    }
   } catch (error: any) {
     console.error('generar error:', error);
     return NextResponse.json({ error: error.message }, { status: 500 });
