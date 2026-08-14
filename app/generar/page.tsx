@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { supabase } from '@/lib/supabase';
 
 export default function GenerarPage() {
@@ -11,6 +11,24 @@ export default function GenerarPage() {
   const [status, setStatus] = useState<'idle' | 'uploading' | 'generating' | 'done' | 'error'>('idle');
   const [videoUrl, setVideoUrl] = useState<string | null>(null);
   const [errorMsg, setErrorMsg] = useState('');
+  const [credits, setCredits] = useState<number | null>(null);
+
+  useEffect(() => {
+    fetchCredits();
+  }, []);
+
+  async function fetchCredits() {
+    const { data: { user } } = await supabase.auth.getUser();
+    if (!user) return;
+
+    const { data } = await supabase
+      .from('user_credits')
+      .select('credits')
+      .eq('user_id', user.id)
+      .single();
+
+    if (data) setCredits(data.credits);
+  }
 
   function handleFile(e: React.ChangeEvent<HTMLInputElement>) {
     const f = e.target.files?.[0];
@@ -53,11 +71,13 @@ export default function GenerarPage() {
       if (!res.ok) {
         setErrorMsg(data.error || 'Algo falló generando el video.');
         setStatus('error');
+        fetchCredits();
         return;
       }
 
       setVideoUrl(Array.isArray(data.output) ? data.output[0] : data.output);
       setStatus('done');
+      fetchCredits();
     } catch (err: any) {
       setErrorMsg(err.message || 'Error inesperado.');
       setStatus('error');
@@ -73,8 +93,13 @@ export default function GenerarPage() {
 
   return (
     <main style={{ background: '#0B0B0C', color: ivory, minHeight: '100vh', fontFamily: 'system-ui, sans-serif', padding: '24px', maxWidth: '420px', margin: '0 auto' }}>
-      <div style={{ fontFamily: 'Georgia, serif', fontStyle: 'italic', fontSize: '1.2rem', color: goldSoft, marginBottom: '20px' }}>
-        Nyra
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
+        <div style={{ fontFamily: 'Georgia, serif', fontStyle: 'italic', fontSize: '1.2rem', color: goldSoft }}>
+          Nyra
+        </div>
+        <div style={{ fontSize: '0.75rem', color: bronze, border: `1px solid ${bronze}`, borderRadius: '20px', padding: '4px 12px' }}>
+          {credits === null ? '...' : `${credits} créditos`}
+        </div>
       </div>
 
       <h1 style={{ fontFamily: 'Georgia, serif', fontSize: '1.6rem', marginBottom: '20px' }}>Crea tu video</h1>
@@ -97,7 +122,7 @@ export default function GenerarPage() {
       <textarea
         value={script}
         onChange={(e) => setScript(e.target.value)}
-        maxLength={280}
+        maxLength={200}
         placeholder="Escribe lo que quieres que diga tu avatar..."
         style={{ width: '100%', minHeight: '100px', background: panel, border: '1px solid #2A2823', borderRadius: '6px', color: ivory, padding: '14px', fontSize: '0.9rem', marginBottom: '16px' }}
       />
