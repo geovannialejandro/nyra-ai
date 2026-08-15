@@ -34,6 +34,15 @@ export default function Home() {
       }}>
         CREAR MI VIDEO
       </a>
+
+      <div style={{ marginTop: '60px', textAlign: 'center' }}>
+        <p style={{ fontSize: '0.75rem', color: '#8C8A85', marginBottom: '4px' }}>
+          contacto.nyraai@gmail.com
+        </p>
+        <p style={{ fontSize: '0.7rem', color: '#8A6A2F' }}>
+          Un producto de Renace AI Creative Studio
+        </p>
+      </div>
     </main>
   );
 }
