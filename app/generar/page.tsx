@@ -19,21 +19,13 @@ export default function GenerarPage() {
 
   async function fetchCredits() {
     const { data: { user } } = await supabase.auth.getUser();
-    if (!user) {
-      setErrorMsg('DEBUG: no hay usuario logueado');
-      return;
-    }
+    if (!user) return;
 
     const { data, error } = await supabase
       .from('user_credits')
       .select('credits')
       .eq('user_id', user.id)
       .single();
-
-    if (error) {
-      setErrorMsg('DEBUG créditos: ' + error.message);
-      return;
-    }
 
     if (data) setCredits(data.credits);
   }
@@ -160,13 +152,3 @@ export default function GenerarPage() {
         {status === 'uploading' && 'SUBIENDO FOTO...'}
         {status === 'generating' && 'GENERANDO VIDEO...'}
         {(status === 'idle' || status === 'done' || status === 'error') && 'CREAR MI VIDEO'}
-      </button>
-
-      {errorMsg && <p style={{ color: '#B5473B', marginTop: '12px', fontSize: '0.85rem' }}>{errorMsg}</p>}
-
-      {status === 'done' && videoUrl && (
-        <video src={videoUrl} controls style={{ width: '100%', marginTop: '24px', borderRadius: '6px' }} />
-      )}
-    </main>
-  );
-}
