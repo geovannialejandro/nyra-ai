@@ -152,3 +152,36 @@ export default function GenerarPage() {
         {status === 'uploading' && 'SUBIENDO FOTO...'}
         {status === 'generating' && 'GENERANDO VIDEO...'}
         {(status === 'idle' || status === 'done' || status === 'error') && 'CREAR MI VIDEO'}
+      </button>
+
+      {errorMsg && (
+        <div style={{ marginTop: '12px' }}>
+          <p style={{ color: '#B5473B', fontSize: '0.85rem', marginBottom: errorMsg.includes('créditos') ? '10px' : 0 }}>
+            {errorMsg}
+          </p>
+          {errorMsg.includes('créditos') && (
+            <a
+              href="/paquetes"
+              style={{
+                display: 'inline-block',
+                background: '#C9A227',
+                color: '#0B0B0C',
+                padding: '10px 20px',
+                borderRadius: '4px',
+                fontWeight: 600,
+                fontSize: '0.75rem',
+                textDecoration: 'none',
+              }}
+            >
+              COMPRAR CRÉDITOS
+            </a>
+          )}
+        </div>
+      )}
+
+      {status === 'done' && videoUrl && (
+        <video src={videoUrl} controls style={{ width: '100%', marginTop: '24px', borderRadius: '6px' }} />
+      )}
+    </main>
+  );
+}
